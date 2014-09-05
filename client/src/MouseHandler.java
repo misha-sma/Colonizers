@@ -1,42 +1,35 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JComponent;
 import javax.swing.event.MouseInputListener;
 
-public class DragImage extends JComponent{// implements MouseMotionListener, MouseInputListener{
-    int imageX, imageY, deltaX, deltaY;
 
-    Image image;
-
-    public DragImage(Image i, int x, int y) {
-        image = i;
-        imageX=x;
-        imageY=y;
+public class MouseHandler implements MouseMotionListener, MouseInputListener{
+    public MouseHandler(){
         addMouseMotionListener(null);
         addMouseListener(this);  
     }
-
+    
     public void mouseDragged(MouseEvent e) {
         System.out.println("mouseDragged");
-        imageX = e.getX()+deltaX;
-        imageY = e.getY()+deltaY;
-        repaint();
+        DragImage image= (DragImage) e.getSource();
+                image.imageX = e.getX()+image.deltaX;
+                image.imageY = e.getY()+image.deltaY;
+        image.repaint();
     }
 
     public void mouseMoved(MouseEvent e) {
         System.out.println("mouseMoved");
     }
 
-    public void paint(Graphics g) {
-        System.out.println("paint");
-        Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(image, imageX, imageY, this);
-        //g.drawImage(image, imageX, imageY, this);
-    }
+//    public void paint(Graphics g) {
+//        System.out.println("paint");
+//        Graphics2D g2 = (Graphics2D) g;
+//        g2.drawImage(image, imageX, imageY, this);
+//        //g.drawImage(image, imageX, imageY, this);
+//    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -50,8 +43,9 @@ public class DragImage extends JComponent{// implements MouseMotionListener, Mou
         // TODO Auto-generated method stub
         
         System.out.println("MOUSE PRESSED");
-        deltaX=imageX-e.getX();
-        deltaY=imageY-e.getY();
+        DragImage image= (DragImage) e.getSource();
+        image.deltaX=image.imageX-e.getX();
+        image.deltaY=image.imageY-e.getY();
     }
 
     @Override
@@ -71,5 +65,4 @@ public class DragImage extends JComponent{// implements MouseMotionListener, Mou
         // TODO Auto-generated method stub
         
     }
-
 }
